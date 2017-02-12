@@ -1,8 +1,7 @@
 #coding=utf-8
 
 from qiniu import Auth,put_file,put_data,BucketManager
-# from django.conf import settings
-from yuntest.local_settings import qiniu_set
+from django.conf import settings
 from os.path import basename,splitext
 from datetime import datetime
 from time import sleep
@@ -106,9 +105,9 @@ class QiniuStorage(object):
         return rlist
                  
 def main():
-    sevencow=QiniuStorage(**qiniu_set)
-    for i in sevencow.ls_files():
-        sevencow.delete(i)
+    sevencow=QiniuStorage(**settings.QINIU_SET)
+    for i,f in enumerate(sevencow.ls_files(),1):
+        print i,'、',f
     filePath='/home/willie/Downloads/PG.jpg'
     url=sevencow.upload(filePath)
     print url    

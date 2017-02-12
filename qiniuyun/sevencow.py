@@ -136,8 +136,8 @@ def list_qiniu(prefix="", limit=100):
     return rlist
         
 def main():
-#    for i in list_qiniu():
-#        delete_qiniu(i)
+    for i,f in enumerate(list_qiniu(),1):
+        print i,'、',f
     filePath='/home/willie/Downloads/PG.jpg'
     url=upload_qiniu(filePath)
     print url    

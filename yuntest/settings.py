@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/1.10/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
-from local_settings import email_conf,qiniu_keys,qiniu_bucket
+from local_settings import email_conf,qiniu_set
 import os
 import pymysql
 pymysql.install_as_MySQLdb()
@@ -133,8 +133,7 @@ STATIC_URL = '/static/'
 # qiniu settigs for upload used by 'qiniuyun.sevencow'
 # https://github.com/qiniu/python-sdk
     
-QINIU_KEYS=qiniu_keys
-QINIU_BUCKET=qiniu_bucket
+QINIU_SET=qiniu_set
 #  ---------------------------------------------------------
 
 #  ---------------------------------------------------------
