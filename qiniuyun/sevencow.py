@@ -56,6 +56,33 @@ def upload_qiniu(filePath):
 #    parseRet(ret,info) #解析上传结果    
     return get_url_qiniu(key)
 
+def upload_data_qiniu(name,data):
+    """文件流上传:
+        1. 目标域名和空间在local_settings.py中设置
+        2. 备案网站域名后，可提高上传速度和稳定性
+        3、空间里的文件名不能重复，所以加上6位日期和6位时间标识
+            'PG.jpg' --> 'PG_170211_044217.jpg'        
+        具体参考:
+        https://developer.qiniu.com/kodo/sdk/python
+        Args:            
+            name: 文件名   
+            data: 上传二进制流                      
+        Return:
+            上传后的url路径
+        """
+    #构建鉴权对象
+    q=Auth(**qiniu_keys)    
+    #上传到七牛后保存的文件名
+    root,ext=splitext(basename(name))
+    time=datetime.now().strftime('%y%m%d_%H%M%S')
+    key = '{}_{}{}'.format(root,time,ext)
+    #生成上传 Token，可以指定过期时间等
+    token=q.upload_token(qiniu_bucket['name'],key)    
+    #上传文件到七牛
+    ret, info = put_data(token, key, data)    
+#    parseRet(ret,info) #解析上传结果    
+    return get_url_qiniu(key)
+    
 def get_url_qiniu(key):    
     url='http://{}/{}'.format(qiniu_bucket['domain'],key)
     return url
