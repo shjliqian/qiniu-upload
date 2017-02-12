@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/1.10/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
-from local_settings import email_conf
+from local_settings import email_conf,qiniu_keys,qiniu_bucket
 import os
 import pymysql
 pymysql.install_as_MySQLdb()
@@ -128,6 +128,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media').replace("\\", "/")
 #MEDIA_URL = '/media/'
+
+#  ---------------------------------------------------------
+# qiniu settigs for upload used by 'qiniuyun.sevencow'
+# https://github.com/qiniu/python-sdk
+    
+QINIU_KEYS=qiniu_keys
+QINIU_BUCKET=qiniu_bucket
+#  ---------------------------------------------------------
 
 #  ---------------------------------------------------------
 #  Email

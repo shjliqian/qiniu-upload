@@ -1,6 +1,7 @@
 #coding=utf-8
 
 from qiniu import Auth,put_file,put_data,BucketManager
+# from django.conf import settings
 from yuntest.local_settings import qiniu_keys,qiniu_bucket
 from os.path import basename,splitext
 from datetime import datetime
