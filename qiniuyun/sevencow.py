@@ -1,6 +1,6 @@
 #coding=utf-8
 
-from qiniu import Auth,put_file,BucketManager
+from qiniu import Auth,put_file,put_data,BucketManager
 from yuntest.local_settings import qiniu_keys,qiniu_bucket
 from os.path import basename,splitext
 from datetime import datetime
@@ -29,7 +29,7 @@ def parseRet(retData,respInfo):
         #print('Error: {}'.format(respInfo.text_body))
 
 def upload_qiniu(filePath):
-    """文件上传:
+    """本地文件上传:
         1. 目标域名和空间在local_settings.py中设置
         2. 备案网站域名后，可提高上传速度和稳定性
         3、空间里的文件名不能重复，所以加上6位日期和6位时间标识

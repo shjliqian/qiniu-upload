@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 from django import forms
 from .models import User
-from qiniuyun.sevencow import upload_qiniu
+from qiniuyun.sevencow import upload_data_qiniu
 import os
 
 # 创建一个form表单类
@@ -19,12 +19,12 @@ def signup(request):
         if uf.is_valid():
             uname = uf.cleaned_data['username']
             hImg = uf.cleaned_data['headImg']
-            L=[settings.BASE_DIR,'media','upload',hImg.name]
-            filePath=os.sep.join(L)
-            with open(filePath,'wb') as wf:
-                for chrunk in hImg.chunks():
-                    wf.write(chrunk)
-            hImg_qiniu= upload_qiniu(filePath)            
+#            L=[settings.BASE_DIR,'media','upload',hImg.name]
+#            filePath=os.sep.join(L)
+#            with open(filePath,'wb') as wf:
+#                for chrunk in hImg.chunks():
+#                    wf.write(chrunk)
+            hImg_qiniu= upload_data_qiniu(hImg.name,hImg)            
             u = User()
             u.username = uname
             u.headImg = hImg_qiniu            
