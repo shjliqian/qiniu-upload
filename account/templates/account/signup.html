@@ -1,0 +1,9 @@
+    <h1>SignUp!</h1>
+    <img src="{{ user.headImg }}" width="180px" height="180px" alt="头像" />
+    <form method="post" enctype="multipart/form-data" action="{% url 'signup' %}">
+        {% csrf_token %}
+        {{ uf.as_p }}
+        <input type="submit" value="上传"/>
+        <input type="submit" value="保存"/>
+    </form>
+    
