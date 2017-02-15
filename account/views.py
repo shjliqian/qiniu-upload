@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 from django import forms
 from .models import User
-from qiniuyun.backend import QiniuStorage
+from qiniuyun.backend import QiniuPush
 import os
 
 # 创建一个form表单类
@@ -24,7 +24,7 @@ def signup(request):
 #            with open(filePath,'wb') as wf:
 #                for chrunk in hImg.chunks():
 #                    wf.write(chrunk)            
-            hImg_qiniu= QiniuStorage().put_data(hImg.name,hImg)            
+            hImg_qiniu= QiniuPush.put_data(hImg.name,hImg)            
             u = User()
             u.username = uname
             u.headImg = hImg_qiniu            
