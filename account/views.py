@@ -12,7 +12,9 @@ class UserForm(forms.Form):
     username = forms.CharField()
     headImg = forms.FileField()
 
-# 第一次打开页面不是POST请求，所以走else那条路，创建一个form表单，然后在前台显示。第二次点击“提交”按钮是POST请求，走if那条路：意思就是这个表单请求内容有files文件，然后如果它们有数据，就存到数据库中，并且把用户名放在`session`中，最后跳转到一个新的url去。
+# 第一次打开页面不是POST请求，所以走else那条路，创建一个form表单，然后在前台显示。
+# 第二次点击“提交”按钮是POST请求，走if那条路：意思就是这个表单请求内容有files文件，
+# 然后如果它们有数据，就存到数据库中，并且把用户名放在`session`中，最后跳转到一个新的url去。
 def signup(request):
     if request.method == 'POST':
         uf = UserForm(request.POST, request.FILES)

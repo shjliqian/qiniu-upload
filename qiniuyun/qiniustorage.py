@@ -1,28 +1,39 @@
 #coding=utf-8
 from __future__ import absolute_import, unicode_literals
 # https://github.com/qiniu/python-sdk/blob/master/qiniu/services/storage/uploader.py
+# https://developer.qiniu.com/kodo/sdk/python
 from qiniu import Auth,put_file,put_data,BucketManager
 from .utils import QiniuError, bucket_lister
 from os.path import basename,splitext
 from datetime import datetime
-   
+  
 class QiniuStorage(object):
+    '''
+    七牛云的文件上传、显示、删除
+    @auth:ZWJ
+    '''
     def __init__(self,access_key,secret_key,bucket_name,bucket_domain):
+        """                                      
+        @para:            
+            access_key:公钥    
+            secret_key:私钥                 
+            bucket_name: 要上传的空间
+            bucket_domain:获取文件url路径时对应的私有域名
+        """ 
         self.auth=Auth(access_key,secret_key)
         self.bucket_name = bucket_name
         self.bucket_domain = bucket_domain
         self.bucket_manager = BucketManager(self.auth)
     
     def put_data(self,name,data):
-        """文件流上传:
-        1. 目标域名和空间在local_settings.py中设置
-        2. 备案网站域名后，可提高上传速度和稳定性
-        3、空间里的文件名不能重复，所以用_newname生成新文件名                                  
-        Args:            
+        """
+        @def:put_data
+        @def_fun: 文件流上传
+            空间里的文件名不能重复，所以用_newname生成新文件名                                  
+        @para:            
             name: 文件名   
             data: 上传二进制流                      
-        Return:
-            上传后的url路径
+        @ret:上传后的url路径        
         """               
         #上传到七牛后保存的文件名
         key = self._newname(name)  
@@ -41,22 +52,20 @@ class QiniuStorage(object):
         time=datetime.now().strftime('_%y%m%d_%H%M%S')
         return '{}{}{}'.format(root,time,ext)
 
-    def get_url(self,key):    
+    def get_url(self,key): 
+        '''返回七牛云上文件名为key的文件对应的url地址'''   
         url='http://{}/{}'.format(self.bucket_domain,key)
         return url 
             
     def put_file(self,filePath):
-        """本地文件上传:
-        1. 目标域名和空间在local_settings.py中设置
-        2. 备案网站域名后，可提高上传速度和稳定性
-        3、空间里的文件名不能重复，所以用_newname生成新文件名  
-        具体参考:
-        https://developer.qiniu.com/kodo/sdk/python
-        Args:            
-            filePath: 待上传文件在磁盘中的绝对路径                             
-        Return:
-            上传后的url路径
-        """        
+        """
+        @def:put_file
+        @def_fun: 本地文件上传
+            空间里的文件名不能重复，所以用_newname生成新文件名                                  
+        @para:            
+            filePath: 待上传文件在磁盘中的绝对路径                              
+        @ret:上传后的url路径        
+        """
         key = self._newname(filePath)  
         token=self.auth.upload_token(self.bucket_name,key) 
         ret, info = put_file(token, key, filePath)  
@@ -71,6 +80,7 @@ class QiniuStorage(object):
         return ret is not None  
 
     def delete(self,key):  
+        '''删除七牛云上文件名为key的文件'''
         if not self.exists(key):
             return '{} not exist in qiniu_cloud'.format(key)  
         bm=self.bucket_manager
@@ -81,15 +91,16 @@ class QiniuStorage(object):
             return info    
 
     def ls_files(self,prefix="", limit=None):
-        """前缀查询(列出七牛云存储空间里的前缀为prefix的所有文件）:            
-        具体规格参考:
-        http://developer.qiniu.com/docs/v6/api/reference/rs/list.html
-        Args:            
-            prefix:     列举前缀            
-            limit:      单次列举个数限制            
-        Returns:
-            文件名列表
         """
+        @def:ls_file
+        @def_fun: 显示七牛云上的文件名
+        具体规格参考:
+        http://developer.qiniu.com/docs/v6/api/reference/rs/list.html                                   
+        @para:            
+            prefix:     列举前缀            
+            limit:      单次列举个数限制                            
+        @ret:  文件名组成的set()集合    
+        """  
         files=set() 
         dirlist = bucket_lister(self.bucket_manager, self.bucket_name,
                                 prefix,limit) 

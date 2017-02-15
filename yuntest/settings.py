@@ -102,18 +102,12 @@ else:
         }
     }
     from local_settings import email_conf,qiniu_conf
-#  ---------------------------------------------------------
+
 # qiniu settigs for upload used by 'qiniuyun.sevencow'
 # https://github.com/qiniu/python-sdk
-# django-qiniu-storage https://github.com/glasslion/django-qiniu-storage
     
     QINIU_CONF=qiniu_conf
-    QINIU_ACCESS_KEY=qiniu_conf['access_key']	#七牛给开发者分配的 AccessKey
-    QINIU_SECRET_KEY=qiniu_conf['secret_key']	#七牛给开发者分配的 Secret
-    QINIU_BUCKET_NAME=qiniu_conf['bucket_name']	#用来存放文件的七牛空间(bucket)的名字
-    QINIU_BUCKET_DOMAIN=qiniu_conf['bucket_domain']
 #  ---------------------------------------------------------    
-#  ---------------------------------------------------------
 #  Email ,ref:http://www.cnblogs.com/BeginMan/p/3443158.html
     EMAIL_BACKEND = email_conf["EMAIL_BACKEND"]
  
