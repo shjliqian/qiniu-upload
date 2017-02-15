@@ -1,3 +1,4 @@
+#coding=utf-8
 """
 Django settings for yuntest project.
 
@@ -9,7 +10,7 @@ https://docs.djangoproject.com/en/1.10/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
-from local_settings import email_conf,qiniu_set
+
 import os
 import pymysql
 pymysql.install_as_MySQLdb()
@@ -78,16 +79,51 @@ WSGI_APPLICATION = 'yuntest.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS':{
-            'read_default_file': os.path.join(BASE_DIR, 'db.cnf'),
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
-    }
-}
 
+if 'SERVER_SOFTWARE' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'RXgYLzhdUYuMneOJwVjw',
+            'USER': '62b4bac3959e4b9e983ce38d058f8e73',
+            'PASSWORD': 'bf0767545e88486c9c32e2e77d309fcf',
+            'HOST': 'sqld.duapp.com',
+            'PORT': '4050',
+            }
+        }
+else:    
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'OPTIONS':{
+                'read_default_file': os.path.join(BASE_DIR, 'db.cnf'),
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            },
+        }
+    }
+    from local_settings import email_conf,qiniu_conf
+#  ---------------------------------------------------------
+# qiniu settigs for upload used by 'qiniuyun.sevencow'
+# https://github.com/qiniu/python-sdk
+# django-qiniu-storage https://github.com/glasslion/django-qiniu-storage
+    
+    QINIU_CONF=qiniu_conf
+    QINIU_ACCESS_KEY=qiniu_conf['access_key']	#七牛给开发者分配的 AccessKey
+    QINIU_SECRET_KEY=qiniu_conf['secret_key']	#七牛给开发者分配的 Secret
+    QINIU_BUCKET_NAME=qiniu_conf['bucket_name']	#用来存放文件的七牛空间(bucket)的名字
+    QINIU_BUCKET_DOMAIN=qiniu_conf['bucket_domain']
+#  ---------------------------------------------------------    
+#  ---------------------------------------------------------
+#  Email ,ref:http://www.cnblogs.com/BeginMan/p/3443158.html
+    EMAIL_BACKEND = email_conf["EMAIL_BACKEND"]
+ 
+    EMAIL_USE_TLS = email_conf["EMAIL_USE_TLS"]
+    EMAIL_HOST = email_conf["EMAIL_HOST"]
+    EMAIL_PORT = email_conf["EMAIL_PORT"]
+    EMAIL_HOST_USER = email_conf["EMAIL_HOST_USER"]
+    EMAIL_HOST_PASSWORD = email_conf["EMAIL_HOST_PASSWORD"]
+    DEFAULT_FROM_EMAIL = email_conf["DEFAULT_FROM_EMAIL"]
+#  ---------------------------------------------------------
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -129,21 +165,6 @@ STATIC_URL = '/static/'
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media').replace("\\", "/")
 #MEDIA_URL = '/media/'
 
-#  ---------------------------------------------------------
-# qiniu settigs for upload used by 'qiniuyun.sevencow'
-# https://github.com/qiniu/python-sdk
-    
-QINIU_SET=qiniu_set
-#  ---------------------------------------------------------
 
-#  ---------------------------------------------------------
-#  Email
-EMAIL_BACKEND = email_conf["EMAIL_BACKEND"]
- 
-EMAIL_USE_TLS = email_conf["EMAIL_USE_TLS"]
-EMAIL_HOST = email_conf["EMAIL_HOST"]
-EMAIL_PORT = email_conf["EMAIL_PORT"]
-EMAIL_HOST_USER = email_conf["EMAIL_HOST_USER"]
-EMAIL_HOST_PASSWORD = email_conf["EMAIL_HOST_PASSWORD"]
-DEFAULT_FROM_EMAIL = email_conf["DEFAULT_FROM_EMAIL"]
-#  ---------------------------------------------------------
+
+

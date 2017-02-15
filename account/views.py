@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 from django import forms
 from .models import User
-from qiniuyun.backends import QiniuStorage
+from qiniuyun.backend import QiniuStorage
 import os
 
 # 创建一个form表单类
@@ -23,14 +23,13 @@ def signup(request):
 #            filePath=os.sep.join(L)
 #            with open(filePath,'wb') as wf:
 #                for chrunk in hImg.chunks():
-#                    wf.write(chrunk)
-            sevencow=QiniuStorage(**settings.QINIU_SET)
-            hImg_qiniu= sevencow.upload_data(hImg.name,hImg)            
+#                    wf.write(chrunk)            
+            hImg_qiniu= QiniuStorage().put_data(hImg.name,hImg)            
             u = User()
             u.username = uname
             u.headImg = hImg_qiniu            
             u.save()
-            request.session['user_info'] = uname
+            request.session['user_name'] = uname
             return HttpResponseRedirect('/signup/done/')
     else:
         uf = UserForm()
@@ -38,5 +37,5 @@ def signup(request):
 
 # 从session中找到这个用户名，按照用户名找到数据库中的用户信息，把用户信息展示出来。
 def signup_result(request):
-    uuu = User.objects.get(username=request.session['user_info'])
+    uuu = User.objects.get(username=request.session['user_name'])
     return render(request, 'account/signup_result.html', {'user': uuu})
