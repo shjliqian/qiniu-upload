@@ -20,12 +20,7 @@ def signup(request):
         uf = UserForm(request.POST, request.FILES)
         if uf.is_valid():
             uname = uf.cleaned_data['username']
-            hImg = uf.cleaned_data['headImg']
-#            L=[settings.BASE_DIR,'media','upload',hImg.name]
-#            filePath=os.sep.join(L)
-#            with open(filePath,'wb') as wf:
-#                for chrunk in hImg.chunks():
-#                    wf.write(chrunk)            
+            hImg = uf.cleaned_data['headImg']           
             hImg_qiniu= QiniuPush.put_data(hImg.name,hImg)            
             u = User()
             u.username = uname
@@ -40,4 +35,5 @@ def signup(request):
 # 从session中找到这个用户名，按照用户名找到数据库中的用户信息，把用户信息展示出来。
 def signup_result(request):
     uuu = User.objects.get(username=request.session['user_name'])
+    uuu.headImg=QiniuPush.private_download_url(uuu.headImg)
     return render(request, 'account/signup_result.html', {'user': uuu})

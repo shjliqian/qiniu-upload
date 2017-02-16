@@ -19,11 +19,23 @@ class QiniuPush(QiniuStorage):
         上传内存中的文件流到七牛并返回上传后的url地址
         example:
             f=request.FILES['photo']
-            url=QiniuPush.put_data(f.name, f)
+            u.headImg=QiniuPush.put_data(f.name, f)
+            u.save() #保存到数据库
+            -----------------
+            #another def 
+            uuu = User.objects.get(username=request.session['user_name'])
+            uuu.headImg=QiniuPush.private_download_url(uuu.headImg) #生成 
+            return render(request, 'account/signup_result.html', {'user': uuu})
         '''
         qn=cls()
         return super(QiniuPush,qn).put_data(name,data)
 
+    @classmethod
+    def private_download_url(cls,url,expires=7200):
+        '''生成私有资源下载链接'''
+        qn=cls()
+        return super(QiniuPush,qn).private_download_url(url,expires)
+        
     @classmethod            
     def put_file(cls,filePath):
         '''上传本地文件到七牛并返回上传后的url地址'''
@@ -35,7 +47,13 @@ class QiniuPush(QiniuStorage):
         '''检测七牛云上是否有文件名为key的文件'''
         qn=cls()
         return super(QiniuPush,qn).exists(key)  
-        
+
+    @classmethod
+    def get_url(cls,key): 
+        '''返回七牛云上文件名为key的文件对应的url地址'''   
+        qn=cls()
+        return super(QiniuPush,qn).get_url(key)
+                
     @classmethod
     def delete(cls,key):  
         '''删除七牛云上文件名为key的文件'''
@@ -61,10 +79,11 @@ def main():
         print i,'、',f
     filePath='/home/willie/Downloads/PG.jpg'
     url=QiniuPush.put_file(filePath) 
+    sleep(1)
     with open(filePath,'rb') as f:
         url2=QiniuPush.put_data(filePath,f.read())
         #or: url2=QiniuPush.put_data(filePath.split('/')[-1],f.read())
-    print url,'\n',url2    
+    print url,'\n',QiniuPush.private_download_url(url2,expires=7200)   
     sleep(3)    
     assert QiniuPush.exists(url)
     for i,f in enumerate(QiniuPush.ls_files(),1):
@@ -74,6 +93,6 @@ def main():
     assert QiniuPush.delete(url)=='{} not exist in qiniu_cloud'.format(url)
     for i,f in enumerate(QiniuPush.ls_files(),1):
         print i,'、',f
-
+ 
 if __name__=='__main__':
     main()    

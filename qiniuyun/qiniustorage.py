@@ -53,10 +53,28 @@ class QiniuStorage(object):
         return '{}{}{}'.format(root,time,ext)
 
     def get_url(self,key): 
-        '''返回七牛云上文件名为key的文件对应的url地址'''   
+        '''        
+        @def:get_url
+        @def_fun: 返回七牛云上文件名为key的文件对应的url地址
+           如果是公有空间，该地址可以直接访问文件；私有空间则需用private_download_url                                  
+        @para:            
+            key: 七牛云上的文件名                                    
+        @ret:域名加文件名生成的url路径
+        '''   
         url='http://{}/{}'.format(self.bucket_domain,key)
         return url 
-            
+
+    def private_download_url(self,url,expires=7200):
+        """
+        @def:private_download_url
+        @def_fun: 生成私有资源下载链接                                       
+        @para:            
+            url: 私有空间资源的原始URL   
+            expires: 下载凭证有效期，默认为7200s                     
+        @ret:私有资源的下载链接        
+        """               
+        return self.auth.private_download_url(url,expires)
+                    
     def put_file(self,filePath):
         """
         @def:put_file
