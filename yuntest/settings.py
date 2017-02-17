@@ -92,18 +92,19 @@ if 'SERVER_SOFTWARE' in os.environ:
             }
         }
 else:    
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'OPTIONS':{
-                'read_default_file': os.path.join(BASE_DIR, 'db.cnf'),
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-            },
-        }
-    }
-    from local_settings import email_conf,qiniu_conf
-
-# qiniu settigs for upload used by 'qiniuyun.sevencow'
+#    DATABASES = {
+#        'default': {
+#            'ENGINE': 'django.db.backends.mysql',
+#            'OPTIONS':{
+#                'read_default_file': os.path.join(BASE_DIR, 'db.cnf'),
+#                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#            },
+#        }
+#    }
+    from local_settings import email_conf,qiniu_conf,DATABASES as local_db
+    DATABASES = local_db    #加上这一句就可以删除前面的DATABASES和db.cnf，方便移植
+    
+# qiniu settigs for upload used by 'qiniuyun.QiniuPush'
 # https://github.com/qiniu/python-sdk
     
     QINIU_CONF=qiniu_conf

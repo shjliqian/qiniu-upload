@@ -1,4 +1,16 @@
 #coding:utf-8
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'myblog2',      #数据库里的database名称
+        'USER': 'root',         #进入数据库的用户名
+        'PASSWORD': '100200',   #密码
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+        }
+    }
+ 
 email_conf={
     "EMAIL_BACKEND" : 'django.core.mail.backends.smtp.EmailBackend', #email后端    
     "EMAIL_USE_TLS" : False,  #是否使用TLS安全传输协议    
@@ -9,7 +21,7 @@ email_conf={
     "EMAIL_HOST_PASSWORD" : '9999',       #发送邮件的邮箱密码
     "DEFAULT_FROM_EMAIL" : 'jaket5219999@126.com',      #这项可要可不要
 }
-qiniu_keys={}
+
 #七牛云存储的权限校验机制基于一对密钥，分别称为Access Key和Secret Key。
 #其中Access Key是公钥，Secret Key是私钥。这一对密钥可以从七牛的后台获取。
 qiniu_keys={

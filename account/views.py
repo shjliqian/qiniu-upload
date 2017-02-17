@@ -30,6 +30,7 @@ def signup(request):
             return HttpResponseRedirect('/signup/done/')
     else:
         uf = UserForm()
+        uf.img=QiniuPush.private_download_url(QiniuPush.get_url('default.jpg'))
     return render(request, 'account/signup.html', {'uf': uf})
 
 # 从session中找到这个用户名，按照用户名找到数据库中的用户信息，把用户信息展示出来。
