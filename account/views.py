@@ -1,7 +1,6 @@
 #coding=utf-8
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from django.conf import settings
 from django import forms
 from .models import User
 from qiniuyun.backend import QiniuPush
