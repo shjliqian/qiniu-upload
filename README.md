@@ -5,6 +5,7 @@ A register page that can upload images to qiniu cloud
 * $ git clone https://github.com/williezh/qiniu-upload
 * $ cd qiniu-upload
 * $ cp local_settings_sample.py local_settings.py
+* $ pip install -r requiredments.txt
 
 then change the configures into yours
 after that performan like this(use python2.7)
