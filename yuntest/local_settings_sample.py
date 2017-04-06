@@ -7,9 +7,14 @@ DATABASES = {
         'USER': 'root',         #进入数据库的用户名
         'PASSWORD': '100200',   #密码
         'HOST': '127.0.0.1',
-        'PORT': '3306',
-        }
+        'PORT': 3306,
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'charset':'utf8mb4',
+            },
+        }        
     }
+ 
  
 email_conf={
     "EMAIL_BACKEND" : 'django.core.mail.backends.smtp.EmailBackend', #email后端    

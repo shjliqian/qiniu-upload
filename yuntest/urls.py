@@ -18,9 +18,11 @@ from django.contrib import admin
 from account import views as account_views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', RedirectView.as_view(url='/signup/', permanent=True),name='home'),
     url(r'^signup/$', account_views.signup, name='signup'),
     url(r'^signup/done/$', account_views.signup_result, name='signup_done'),
     
