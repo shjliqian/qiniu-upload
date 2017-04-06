@@ -1,7 +1,7 @@
  qiniu-upload
 ==============
 A simple register page that can upload images to qiniu cloud
-## Usage:
+## Run at local:
 * $ git clone https://github.com/williezh/qiniu-upload
 * $ cd qiniu-upload
 * $ virtualenv --python=python2.7 venv
@@ -18,7 +18,7 @@ init the database and runserver
 * $ python manage.py migrate
 * $ python manage.py runserver
 
-and then open the site: [127.0.0.1:8000](127.0.0.1:8000)
+and then open the site: http://127.0.0.1:8000
 
 you will see the page where input a Username and 
 click 'Choose File' to upload image and submit it,then you can
